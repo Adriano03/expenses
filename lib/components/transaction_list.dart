@@ -5,13 +5,14 @@ import '../models/transaction.dart';
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final formataMoeda = NumberFormat.currency(locale: 'pt-BR', symbol: 'R\$');
+  final void Function(String) onRemove;
 
-  TransactionList(this.transactions);
+  TransactionList(this.transactions, this.onRemove);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 480,
       child: transactions.isEmpty
           ? Column(
               children: <Widget>[
@@ -50,9 +51,8 @@ class TransactionList extends StatelessWidget {
                           child: Text(
                             formataMoeda.format(tr.value),
                             style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold
-                            ),
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -63,6 +63,35 @@ class TransactionList extends StatelessWidget {
                     ),
                     subtitle: Text(
                       DateFormat('dd/MM/y').format(tr.date),
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete_forever),
+                      color: Theme.of(context).errorColor,
+
+                      onPressed: (() {
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                                  title: const Text(
+                                      'Tem certeza que deseja excluir ?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context),
+                                      child: const Text('Cancelar'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        onRemove(tr.id);
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('Excluir'),
+                                    ),
+                                  ],
+                                ));
+                      }),
+
+                      // onPressed: () => onRemove(tr.id),
                     ),
                   ),
                 );
