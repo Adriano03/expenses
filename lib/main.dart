@@ -1,5 +1,3 @@
-// import 'package:flutter_loca';
-
 import 'package:flutter/material.dart';
 
 import 'dart:math';
@@ -18,6 +16,7 @@ class ExpensesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData tema = ThemeData();
+    
     return MaterialApp(
       home: MyHomePage(),
 
@@ -25,6 +24,7 @@ class ExpensesApp extends StatelessWidget {
         colorScheme: tema.colorScheme.copyWith(
           primary: Colors.purple,
           secondary: Colors.amber,
+          tertiary: Colors.grey.shade400
         ),
         textTheme: tema.textTheme.copyWith(
           headline6: const TextStyle(
@@ -44,7 +44,7 @@ class ExpensesApp extends StatelessWidget {
       ),
 
       //Tema Dark
-      // darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.dark(),
     );
   }
 }
@@ -75,6 +75,18 @@ class _MyHomePageState extends State<MyHomePage> {
       title: 'Conta de Água',
       value: 210.76,
       date: DateTime.now().subtract(const Duration(days: 4)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Cartão de Crédito',
+      value: 128652.12,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Prensadão da XV',
+      value: 12.00,
+      date: DateTime.now(),
     ),
   ];
 
