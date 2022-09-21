@@ -34,9 +34,10 @@ class ExpensesApp extends StatelessWidget {
 
       theme: tema.copyWith(
         colorScheme: tema.colorScheme.copyWith(
-            primary: Colors.purple,
-            secondary: Colors.amber,
-            tertiary: Colors.grey.shade400),
+          primary: Colors.purple,
+          secondary: Colors.amber,
+          tertiary: Colors.grey.shade400,
+        ),
         textTheme: tema.textTheme.copyWith(
           headline6: const TextStyle(
             fontFamily: 'Quicksand',
@@ -73,53 +74,32 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    // Transaction(
-    //   id: '01',
-    //   title: 'Conta 1',
-    //   value: 26.80,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: '02',
-    //   title: 'Conta 2',
-    //   value: 126.80,
-    //   date: DateTime.now().subtract(const Duration(days: 1)),
-    // ),
-    // Transaction(
-    //   id: '03',
-    //   title: 'Conta 3',
-    //   value: 422.80,
-    //   date: DateTime.now().subtract(const Duration(days: 2)),
-    // ),
-    // Transaction(
-    //   id: '04',
-    //   title: 'Conta 4',
-    //   value: 236.80,
-    //   date: DateTime.now().subtract(const Duration(days: 3)),
-    // ),
-    // Transaction(
-    //   id: '05',
-    //   title: 'Conta 5',
-    //   value: 6.80,
-    //   date: DateTime.now().subtract(const Duration(days: 4)),
-    // ),
-    // Transaction(
-    //   id: '06',
-    //   title: 'Conta 6',
-    //   value: 16.0,
-    //   date: DateTime.now().subtract(const Duration(days: 6)),
-    // ),
-    // Transaction(
-    //   id: '07',
-    //   title: 'Conta 7',
-    //   value: 155,
-    //   date: DateTime.now().subtract(const Duration(days: 6)),
-    // ),
-  ];
+//with WidgetsBindingObserver é apenas para mostrar o estado de vida da aplicação
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+  final List<Transaction> _transactions = [];
 
   bool _showChart = false;
+
+  //Ciclo de vida da aplicação, passando pelos estados (inactive, paused, redumed e detached);
+  //initState() inicia o estado;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  //didChangeAppLifecycleState() mostra o estado;
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // print(state);
+  }
+
+  //dispose() fecha o estado;
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
@@ -171,7 +151,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     //Adaptação de icones Adroid/IOS
     final iconList = Platform.isIOS ? CupertinoIcons.list_dash : Icons.list;
-    final iconChart = Platform.isIOS ? CupertinoIcons.chart_bar_alt_fill : Icons.bar_chart;
+    final iconChart =
+        Platform.isIOS ? CupertinoIcons.chart_bar_alt_fill : Icons.bar_chart;
 
     final actions = <Widget>[
       if (isLandscape)
